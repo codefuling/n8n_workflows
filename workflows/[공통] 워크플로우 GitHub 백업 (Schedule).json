@@ -1,12 +1,12 @@
 {
   "id": "RrbqaOviQwBOzDUZ",
   "name": "[공통] 워크플로우 GitHub 백업 (Schedule)",
-  "active": true,
-  "activeVersionId": "dba96f63-1a49-4d6b-8a18-5272dd36fe2f",
+  "active": false,
+  "activeVersionId": null,
   "createdAt": "2026-08-29T09:20:59.862Z",
-  "updatedAt": "2026-08-29T09:52:30.794Z",
+  "updatedAt": "2026-08-29T09:53:23.243Z",
   "isArchived": false,
-  "versionId": "dba96f63-1a49-4d6b-8a18-5272dd36fe2f",
+  "versionId": "5ce84bd3-fb47-4e6f-a874-da90cb5f2d23",
   "triggerCount": 2,
   "nodes": [
     {
@@ -134,23 +134,6 @@
           "name": "GitHub account"
         }
       }
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "test-github-backup-run",
-        "responseMode": "lastNode",
-        "options": {}
-      },
-      "id": "11111111-2222-3333-4444-555555555555",
-      "name": "TEMP 테스트 웹훅",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        0,
-        100
-      ],
-      "webhookId": "11111111-2222-3333-4444-555555555555"
     }
   ],
   "connections": {
@@ -198,17 +181,6 @@
           }
         ]
       ]
-    },
-    "TEMP 테스트 웹훅": {
-      "main": [
-        [
-          {
-            "node": "전체 워크플로우 조회",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "nodeGroups": [],
@@ -241,218 +213,5 @@
       "updatedAt": "2026-08-29T09:20:59.863Z"
     }
   ],
-  "activeVersion": {
-    "versionId": "dba96f63-1a49-4d6b-8a18-5272dd36fe2f",
-    "workflowId": "RrbqaOviQwBOzDUZ",
-    "nodes": [
-      {
-        "parameters": {
-          "rule": {
-            "interval": [
-              {
-                "triggerAtHour": 22
-              }
-            ]
-          }
-        },
-        "id": "g1111111-1111-4111-8111-111111111111",
-        "name": "매일 저녁 10시",
-        "type": "n8n-nodes-base.scheduleTrigger",
-        "typeVersion": 1.4,
-        "position": [
-          0,
-          304
-        ]
-      },
-      {
-        "parameters": {
-          "filters": {},
-          "requestOptions": {}
-        },
-        "id": "g2222222-2222-4222-8222-222222222222",
-        "name": "전체 워크플로우 조회",
-        "type": "n8n-nodes-base.n8n",
-        "typeVersion": 1,
-        "position": [
-          240,
-          304
-        ],
-        "credentials": {
-          "n8nApi": {
-            "id": "F85t9atgGGT21tZ1",
-            "name": "n8n account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "// 워크플로우마다 GitHub에 커밋할 파일 1개씩 생성\nconst items = $input.all();\nconst stamp = DateTime.now().setZone('Asia/Seoul').toFormat('yyyy-MM-dd HH:mm');\nreturn items.map(it => {\n  const wf = it.json;\n  const safe = String(wf.name || wf.id).replace(/[\\/\\\\:*?\"<>|]/g, '_').replace(/\\s+/g, ' ').trim();\n  return {\n    json: {\n      fileName: `${safe}.json`,\n      content: JSON.stringify(wf, null, 2),\n      commitMessage: `backup: ${safe} (${stamp} KST)`\n    }\n  };\n});"
-        },
-        "id": "g3333333-3333-4333-8333-333333333333",
-        "name": "백업 파일 준비",
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          480,
-          304
-        ]
-      },
-      {
-        "parameters": {
-          "resource": "file",
-          "operation": "edit",
-          "owner": {
-            "__rl": true,
-            "mode": "name",
-            "value": "codefuling"
-          },
-          "repository": {
-            "__rl": true,
-            "mode": "name",
-            "value": "n8n_workflows"
-          },
-          "filePath": "=workflows/{{ $json.fileName }}",
-          "fileContent": "={{ $json.content }}",
-          "commitMessage": "={{ $json.commitMessage }}"
-        },
-        "id": "g4444444-4444-4444-8444-444444444444",
-        "name": "GitHub 업데이트",
-        "type": "n8n-nodes-base.github",
-        "typeVersion": 1.1,
-        "position": [
-          720,
-          304
-        ],
-        "retryOnFail": true,
-        "maxTries": 3,
-        "waitBetweenTries": 5000,
-        "webhookId": "dfaa3762-fff5-4f3e-8a6e-34ef35725fd2",
-        "credentials": {
-          "githubApi": {
-            "id": "EkfgVYVmryxVTW2Q",
-            "name": "GitHub account"
-          }
-        },
-        "onError": "continueErrorOutput"
-      },
-      {
-        "parameters": {
-          "resource": "file",
-          "owner": {
-            "__rl": true,
-            "mode": "name",
-            "value": "codefuling"
-          },
-          "repository": {
-            "__rl": true,
-            "mode": "name",
-            "value": "n8n_workflows"
-          },
-          "filePath": "=workflows/{{ $json.fileName }}",
-          "fileContent": "={{ $json.content }}",
-          "commitMessage": "={{ $json.commitMessage }}"
-        },
-        "id": "g5555555-5555-4555-8555-555555555555",
-        "name": "GitHub 신규 생성",
-        "type": "n8n-nodes-base.github",
-        "typeVersion": 1.1,
-        "position": [
-          960,
-          432
-        ],
-        "retryOnFail": true,
-        "maxTries": 3,
-        "waitBetweenTries": 5000,
-        "webhookId": "9612f150-219e-4590-ae1f-149703670a08",
-        "credentials": {
-          "githubApi": {
-            "id": "EkfgVYVmryxVTW2Q",
-            "name": "GitHub account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "httpMethod": "POST",
-          "path": "test-github-backup-run",
-          "responseMode": "lastNode",
-          "options": {}
-        },
-        "id": "11111111-2222-3333-4444-555555555555",
-        "name": "TEMP 테스트 웹훅",
-        "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2,
-        "position": [
-          0,
-          100
-        ],
-        "webhookId": "11111111-2222-3333-4444-555555555555"
-      }
-    ],
-    "connections": {
-      "매일 저녁 10시": {
-        "main": [
-          [
-            {
-              "node": "전체 워크플로우 조회",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "전체 워크플로우 조회": {
-        "main": [
-          [
-            {
-              "node": "백업 파일 준비",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "백업 파일 준비": {
-        "main": [
-          [
-            {
-              "node": "GitHub 업데이트",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "GitHub 업데이트": {
-        "main": [
-          [],
-          [
-            {
-              "node": "GitHub 신규 생성",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "TEMP 테스트 웹훅": {
-        "main": [
-          [
-            {
-              "node": "전체 워크플로우 조회",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "nodeGroups": [],
-    "authors": "kim sehwan",
-    "name": null,
-    "description": null,
-    "autosaved": false,
-    "createdAt": "2026-08-29T09:52:30.795Z",
-    "updatedAt": "2026-08-29T09:52:30.795Z"
-  }
+  "activeVersion": null
 }
