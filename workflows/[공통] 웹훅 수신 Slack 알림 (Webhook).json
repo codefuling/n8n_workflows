@@ -1,0 +1,168 @@
+{
+  "id": "rXKVsxL8xkso7WJS",
+  "name": "[공통] 웹훅 수신 Slack 알림 (Webhook)",
+  "active": true,
+  "activeVersionId": "25dab61d-2eb9-4818-922c-a06cb67f75ec",
+  "createdAt": "2026-08-27T15:18:43.434Z",
+  "updatedAt": "2026-08-29T08:49:22.838Z",
+  "isArchived": false,
+  "versionId": "25dab61d-2eb9-4818-922c-a06cb67f75ec",
+  "triggerCount": 1,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webhook-to-slack",
+        "options": {}
+      },
+      "id": "b1e7c3a2-5d4f-4a1b-9c8e-1f2a3b4c5d6e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "f8f516c7-d8cf-4bb7-8aad-558f1166792e"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "alert"
+        },
+        "text": "=📥 *Webhook 수신 알림*\n```\n{{ JSON.stringify($json.body, null, 2) }}\n```",
+        "otherOptions": {}
+      },
+      "id": "c2f8d4b3-6e5a-4b2c-8d9f-2a3b4c5d6e7f",
+      "name": "Send to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        224,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "webhookId": "457311db-e48d-48ea-a7f9-b8a24bbc3460",
+      "credentials": {
+        "slackApi": {
+          "id": "SHjgKTRCW6ZEDI18",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true,
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": [],
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "rXKVsxL8xkso7WJS",
+      "projectId": "6a9BOhQpINWsSGEq",
+      "createdAt": "2026-08-27T15:18:43.436Z",
+      "updatedAt": "2026-08-27T15:18:43.436Z"
+    }
+  ],
+  "activeVersion": {
+    "versionId": "25dab61d-2eb9-4818-922c-a06cb67f75ec",
+    "workflowId": "rXKVsxL8xkso7WJS",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "webhook-to-slack",
+          "options": {}
+        },
+        "id": "b1e7c3a2-5d4f-4a1b-9c8e-1f2a3b4c5d6e",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "f8f516c7-d8cf-4bb7-8aad-558f1166792e"
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "mode": "name",
+            "value": "alert"
+          },
+          "text": "=📥 *Webhook 수신 알림*\n```\n{{ JSON.stringify($json.body, null, 2) }}\n```",
+          "otherOptions": {}
+        },
+        "id": "c2f8d4b3-6e5a-4b2c-8d9f-2a3b4c5d6e7f",
+        "name": "Send to Slack",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.7,
+        "position": [
+          224,
+          0
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "webhookId": "457311db-e48d-48ea-a7f9-b8a24bbc3460",
+        "credentials": {
+          "slackApi": {
+            "id": "SHjgKTRCW6ZEDI18",
+            "name": "Slack account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Send to Slack",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "kim sehwan",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "createdAt": "2026-08-27T15:34:02.647Z",
+    "updatedAt": "2026-08-27T15:34:02.647Z"
+  }
+}
